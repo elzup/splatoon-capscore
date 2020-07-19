@@ -1,4 +1,8 @@
 import cv2
+from keras.models import load_model
+import numpy as np
+
+model = load_model("./model/model_mnist_cnn.h5")
 
 FPS = 30
 FILE_PATH = './resource/splatoon_hoko.mp4'
@@ -17,8 +21,12 @@ def calc(file_path, fps):
         ret, frame = cap.read()
         if not ret:
             break
+
         count_frame = frame[79: 79 + 90, 309: 309 + 670]
-        cv2.imwrite('dist/mov_%s.jpg' % (n), count_frame)
+        xt = np.array([].append(count_frame))
+        result = model.predict_classes(xt)
+        print(result)
+        # cv2.imwrite('dist/mov_%s.jpg' % (n), count_frame)
 
 
 if __name__ == "__main__":
